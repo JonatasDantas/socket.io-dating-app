@@ -4,7 +4,8 @@ const express = require('express');
 const socketio = require('socket.io');
 const {
     User,
-    userJoin
+    userJoin,
+    getUser
 } = require('./users');
 
 const app = express();
@@ -20,8 +21,19 @@ io.on('connection', socket => {
         var user = new User(data);
         userJoin(user);
 
+        socket.join(user.getId());
+
         socket.emit('register-successfully', user.getId());        
-    })
+    });
+
+    socket.on('getUserData', (userId) => {
+        const user = getUser(userId);
+
+        socket.emit('getUserDataResponse', {
+            ...user,
+            image: user.image.toString('base64'),
+        });
+    });
 })
 
 server.listen(8080, () => {

@@ -12,8 +12,8 @@ registerForm.addEventListener('submit', event => {
             const base64 = this.result.replace(/.*base64,/, '');
             const form = {
                 image: base64,
-                username: document.getElementById("username").nodeValue,
-                description: document.getElementById("description").nodeValue,
+                username: document.getElementById("username").value,
+                description: document.getElementById("description").value,
             }
 
             socket.emit('register', form);

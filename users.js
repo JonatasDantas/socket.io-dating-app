@@ -36,10 +36,20 @@ class User {
 function userJoin(user) {
    users.push(user);
 
+   console.log(users, "users on push");
+
    return user;
+}
+
+function getUser(id) {
+    console.log(id, "id");
+    console.log(users, "users");
+
+    return users.find(user => user.id == id);
 }
 
 module.exports = {
     User,
-    userJoin
+    userJoin,
+    getUser
 };
