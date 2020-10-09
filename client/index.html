@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+			integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk="
+			crossorigin="anonymous"
+		/>
+		<link rel="stylesheet" href="css/styles.css"/>
+		<title>DatingSI - Entrar</title>
+    </head>
+    
+    <body>
+        <div class="register-container">
+            <div class="register-card">
+                <div class="header">
+                    DatingSI
+                </div>
+                <div class="body">
+                    <form id="register-form" action="main.html">
+                        <div class="form-control">
+                            <label for="username">Imagem de perfil</label>
+                            <input
+                                type="file"
+                                name="image"
+                                id="image"
+                                required
+                            />
+                        </div>
+                        
+                        <div class="form-control">
+                            <label for="username">Usuário</label>
+                            <input
+                                type="text"
+                                name="username"
+                                id="username"
+                                placeholder="Enter username..."
+                                required
+                            />
+                        </div>
+
+                        <div class="form-control">
+                            <label for="description">Descrição</label>
+                            <input
+                                type="text"
+                                name="description"
+                                id="description"
+                                placeholder="Enter description..."
+                                required
+                            />
+                        </div>
+
+                        <button type="submit" class="btn">Acessar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="js/register.js"></script>
+    </body>
+</html>
