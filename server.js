@@ -5,7 +5,8 @@ const socketio = require('socket.io');
 const {
     User,
     userJoin,
-    getUser
+    getUser,
+    getAbleUsers
 } = require('./users');
 
 const app = express();
@@ -23,7 +24,12 @@ io.on('connection', socket => {
 
         socket.join(user.getId());
 
-        socket.emit('register-successfully', user.getId());        
+        socket.emit('register-successfully', user.getId());
+
+        socket.broadcast.emit('new-user', {
+            ...user,
+            image: user.image.toString('base64'),
+        });
     });
 
     socket.on('getUserData', (userId) => {
@@ -32,6 +38,7 @@ io.on('connection', socket => {
         socket.emit('getUserDataResponse', {
             ...user,
             image: user.image.toString('base64'),
+            listUsers: getAbleUsers(userId),
         });
     });
 })

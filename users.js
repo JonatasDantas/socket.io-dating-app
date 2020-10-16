@@ -34,22 +34,29 @@ class User {
 }
 
 function userJoin(user) {
-   users.push(user);
-
-   console.log(users, "users on push");
-
-   return user;
+    users.push(user);
+    return user;
 }
 
 function getUser(id) {
-    console.log(id, "id");
-    console.log(users, "users");
-
     return users.find(user => user.id == id);
+}
+
+function getAbleUsers(userId) {
+    return users.filter(user => {
+        user.image = user.image.toString('base64');
+
+        if (user.id !== userId) {
+            return true;
+        }
+
+        return false;
+    });
 }
 
 module.exports = {
     User,
     userJoin,
-    getUser
+    getUser,
+    getAbleUsers
 };
