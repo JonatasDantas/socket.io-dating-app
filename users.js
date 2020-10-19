@@ -1,14 +1,15 @@
 const fs = require('fs');
-const { v4: uuidv4 } = require('uuid');
+// const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
 const users = [];
 
 class User {
-    constructor(userData) {
-        this.id = uuidv4();
+    constructor(userData, id) {
+        this.id = id;
         this.username = userData.username;
         this.description = userData.description;
+        this.likes = [];
 
         const buffer = Buffer.from(userData.image, 'base64');
         fs.writeFile(
@@ -29,6 +30,7 @@ class User {
             "id": this.id,
             "username": this.username,
             "description": this.description,
+            "likes": this.likes
         });
     }
 }
@@ -54,9 +56,19 @@ function getAbleUsers(userId) {
     });
 }
 
+function setupLikes(userId, userLikedId) {
+    const user = users.find(user => user.id == userId);
+    const userLiked = users.find(user => user.id == userLikedId);
+
+    user.likes.push(userLikedId);
+
+    return userLiked.likes.includes(userId);
+}
+
 module.exports = {
     User,
     userJoin,
     getUser,
-    getAbleUsers
+    getAbleUsers,
+    setupLikes
 };

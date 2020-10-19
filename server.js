@@ -6,7 +6,8 @@ const {
     User,
     userJoin,
     getUser,
-    getAbleUsers
+    getAbleUsers,
+    setupLikes
 } = require('./users');
 
 const app = express();
@@ -17,16 +18,15 @@ app.use(express.static(path.join(__dirname, "client")));
 
 io.on('connection', socket => {
     console.log("someone connected");
+    const id = socket.id;
 
     socket.on('register', async (data) => {
-        var user = new User(data);
+        var user = new User(data, id);
         userJoin(user);
-
-        socket.join(user.getId());
 
         socket.emit('register-successfully', user.getId());
 
-        socket.broadcast.emit('new-user', {
+        socket.broadcast.emit('newUser', {
             ...user,
             image: user.image.toString('base64'),
         });
@@ -35,12 +35,22 @@ io.on('connection', socket => {
     socket.on('getUserData', (userId) => {
         const user = getUser(userId);
 
+        socket.join(user.getId());
+
         socket.emit('getUserDataResponse', {
             ...user,
             image: user.image.toString('base64'),
             listUsers: getAbleUsers(userId),
         });
     });
+
+    socket.on('likeUser', (likeData) => {
+        if (setupLikes(likeData.currentUser, likeData.likedUser)) {
+            console.log("new Match!!", likeData);
+            socket.emit("newMatch", likeData.likedUser);
+            io.to(likeData.likedUser).emit("newMatch", likeData.currentUser);
+        }
+    })
 })
 
 server.listen(8080, () => {

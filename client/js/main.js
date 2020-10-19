@@ -8,10 +8,12 @@ const cardImage = document.getElementById("card-img-top");
 const recuseButton = document.getElementById("recuse");
 const likeButton = document.getElementById("like");
 
+var userId;
 var users = [];
+var likedUsers = [];
 
-recuseButton.addEventListener('click', recuseUser);
-recuseButton.addEventListener('click', recuseUser);
+recuseButton.addEventListener('click', showNextUser);
+likeButton.addEventListener('click', likeUser);
 
 socket.on("connect", () => {
     console.log("connected!");
@@ -26,6 +28,7 @@ socket.on("connect", () => {
 socket.on("getUserDataResponse", (data) => {
     userImage.src = `data:image/jpg;base64,${data.image}`;
     userName.innerHTML = `Olá, ${data.username}`;
+    userId = data.id;
 
     if (data.listUsers.length > 0) {
         users.push(...data.listUsers);
@@ -36,7 +39,7 @@ socket.on("getUserDataResponse", (data) => {
     console.log(users, "list users online");
 });
 
-socket.on("new-user", (data) => {
+socket.on("newUser", (data) => {
     console.log("new user broadcasted", data);
     users.push(data);
 
@@ -45,7 +48,14 @@ socket.on("new-user", (data) => {
     }
 });
 
-function recuseUser() {
+socket.on("newMatch", (userId) => {
+    console.log("new match!!", likedUsers.find(user => user.id == userId));
+    const user = likedUsers.find(user => user.id == userId);
+
+    renderMessage(user.id, user.image, "Vocês deram um novo Match!");
+})
+
+function showNextUser() {
     users.splice(0, 1);
 
     if (users.length > 0) {
@@ -53,6 +63,17 @@ function recuseUser() {
     } else {
         renderGenericCard();
     }
+}
+
+function likeUser() {
+    likedUsers.push(users[0]);
+
+    socket.emit("likeUser", {
+        currentUser: userId,
+        likedUser: users[0].id
+    });
+
+    showNextUser();
 }
 
 function renderUser(user) {
@@ -65,4 +86,22 @@ function renderGenericCard() {
     cardName.innerHTML = "Aguardando novos usuários";
     cardDescription.innerHTML = "Quando um novo usuário entrar, aparecerá para você";
     cardImage.src = `img/aguardando-usuarios.png`;
+}
+
+function renderMessage(id, image, text) {
+    const div = document.createElement("div");
+    div.classList.add("message");
+
+    const img = document.createElement("img");
+    img.classList.add("messsage-user-image");
+    img.src = `data:image/jpg;base64,${image}`;
+    div.appendChild(img);
+
+    const span = document.createElement("span");
+    span.classList.add("message-text");
+    span.id = `message-text-${id}`
+    span.innerText = text;
+    div.appendChild(span);
+
+    document.querySelector(".messages-container").appendChild(div);
 }
