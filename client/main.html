@@ -22,16 +22,11 @@
 				</div>
 				<div class="messages-container">
 					<span class="messages-title">Mensagens</span>
-
-					<!-- <div class="message">
-						<img id="messsage-user-image" class="messsage-user-image" src=""/>
-						<span id="message-text" class="message-text">Vocês deram um novo Match!</span>
-					</div> -->
 				</div>
 			</div>
 
 			<div class="main">
-				<div class="discover-container">
+				<div id="discover" class="discover-container">
 					<div class="card" style="width: 19rem;">
 						<img src="img/aguardando-usuarios.png" id="card-img-top" class="card-img-top" alt="">
 						<div class="card-body">
@@ -46,8 +41,30 @@
 						</div>
 					</div>
 				</div>
-				<div class="chat-container" style="display: none;">
-
+				<div id="chat" class="chat-container">
+					<div class="chat">
+						<header class="chat-header">
+							<h1 id="chat-title"><i class="fas fa-smile"></i>Chat com Visitante</h1>
+							<a id="back-discovery" class="btn">Voltar para descoberta</a>
+						</header>
+	
+						<main class="chat-main">
+							<div id="chat-messages" class="chat-messages"></div>
+						</main>
+	
+						<div class="chat-form-container">
+							<form id="message-form">
+							  <input
+								id="msg"
+								type="text"
+								placeholder="Enter Message"
+								required
+								autocomplete="off"
+							  />
+							  <button class="btn" type="submit"><i class="fas fa-paper-plane"></i> Enviar</button>
+							</form>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

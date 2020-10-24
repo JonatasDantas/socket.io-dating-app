@@ -51,6 +51,10 @@ io.on('connection', socket => {
             io.to(likeData.likedUser).emit("newMatch", likeData.currentUser);
         }
     })
+
+    socket.on('sendMessage', (message) => {
+        io.to(message.destiny).emit("newMessage", {...message})
+    });
 })
 
 server.listen(8080, () => {
