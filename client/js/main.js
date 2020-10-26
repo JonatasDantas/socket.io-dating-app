@@ -38,6 +38,7 @@ socket.on("connect", () => {
 
 // Response da requisição "getUserData", simulando o funcionamento de uma requisição GET
 // Recebe os dados, descompacta foto em base64 e altera a tela para renderizar os dados do usuário
+// Baseado nessa dúvida do stackoverflow: https://stackoverflow.com/questions/59478402/how-do-i-send-image-to-server-via-socket-io
 socket.on("getUserDataResponse", (data) => {
     document.getElementById("user-image").src = `data:image/jpg;base64,${data.image}`;
     document.getElementById("user-name").innerHTML = `Olá, ${data.username}`;
@@ -73,7 +74,7 @@ socket.on("newMatch", (userId) => {
     messages[userId] = [];
 
     // Renderiza a mensagem
-    renderMessage(user.id, user.image, "Vocês deram um novo Match!");
+    renderMessage(user.id, user.image, "Vocês deram um novo Match! Clique para conversar");
 })
 
 // Evento de recepção de nova mensagem de algum usuário

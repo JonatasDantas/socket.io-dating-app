@@ -15,6 +15,7 @@ class User {
         this.likes = [];
 
         // Aqui é onde a imagem é salva, cria um buffer que converte a imagem de base64 (usado para ocupar menos espaço) para .png
+        // Baseado nessa dúvida do stackoverflow: https://stackoverflow.com/questions/59478402/how-do-i-send-image-to-server-via-socket-io
         const buffer = Buffer.from(userData.image, 'base64');
 
         // salva a imagem na pasta assets/img do projeto
